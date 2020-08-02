@@ -1,0 +1,312 @@
+Help on module auto-openvas:
+
+NAME
+    auto-openvas - AutoVAS primary logic
+
+FUNCTIONS
+    clean_up()
+        remove machines with last successfull test older than threshold days
+    
+    days_diff(date1: datetime.datetime, date2: datetime.datetime = None) -> int
+        return days between 2 dates
+    
+    get_args() -> argparse.Namespace
+        argparser
+    
+    import_target_file(path: str) -> None
+        import single job file
+    
+    import_target_folder(path: str) -> None
+        crawl import folder and load jobs
+    
+    import_targets(path: str) -> None
+        call method for file or folder
+    
+    load_config() -> dict
+        get config + add app path
+    
+    load_previous_data() -> None
+        restore previously saved data (ip, mac and time stamps)
+    
+    mk_machine(json_data: dict, source: str) -> None
+        create new machine object
+    
+    now() -> datetime.datetime
+    
+    openvas_analysis() -> None
+        handle gathering from openvas
+    
+    openvas_populate() -> None
+        create missing openvas targets/tasks
+    
+    openvas_run_task() -> None
+        try to start OV task until success, ordered by last_report
+    
+    registered(ip: str, keep: bool = None) -> bool
+        create machine object and return True if doesn't exist yet
+    
+    save_results() -> None
+        prepare and export gathered information
+    
+    scan_net(subnet: str) -> None
+        crawl net and add found IPs
+    
+    sleep(...)
+        sleep(seconds)
+        
+        Delay execution for a given number of seconds.  The argument may be
+        a floating point number for subsecond precision.
+    
+    task_running(ip: str) -> bool
+        confirm that task is running
+    
+    tasks_running() -> int
+        count running tasks
+    
+    test_order(sort_key: str) -> Iterator[Tuple[str, str]]
+        return list (ip, sort_key) ordered by sort_key value
+
+DATA
+    Iterator = typing.Iterator
+    Tuple = typing.Tuple
+
+FILE
+    .../autoopenvas/auto-openvas.py
+
+
+
+=================================================
+
+Help on module Machine:
+
+NAME
+    Machine - class Machine
+
+CLASSES
+    builtins.object
+        Machine
+    
+    class Machine(builtins.object)
+     |  Machine(ip: str) -> None
+     |  
+     |  machine container
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, ip: str) -> None
+     |      Initialize self.  See help(type(self)) for accurate signature.
+     |  
+     |  mac_update(self, mac: str) -> bool
+     |      verify mac matches
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+DATA
+    default_stamp = datetime.datetime(1970, 1, 1, 0, 0)
+
+FILE
+    .../autoopenvas/modules/Machine.py
+
+
+
+=================================================
+
+Help on module OpenVAS:
+
+NAME
+    OpenVAS - class OpenVAS
+
+CLASSES
+    builtins.object
+        OpenVAS
+    
+    class OpenVAS(builtins.object)
+     |  OpenVAS(login: str, passwd: str, ip: str, omp_port: str, web_port: str) -> None
+     |  
+     |  parse and control openvas by omp
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, login: str, passwd: str, ip: str, omp_port: str, web_port: str) -> None
+     |      Initialize self.  See help(type(self)) for accurate signature.
+     |  
+     |  mk_target(self, ip: str, mac: str, ports: str, comment: str = '') -> Union[str, NoneType]
+     |      create target
+     |  
+     |  mk_task(self, ip: str, mac: str, target_id: str, scan_config: str, comment: str = '') -> Union[str, NoneType]
+     |      create task
+     |  
+     |  reports(self) -> Iterator[Union[str, datetime.datetime]]
+     |      extract ip, reportID and time stamp from openvas report
+     |  
+     |  results(self) -> Iterator[str]
+     |      extract ip, severety
+     |  
+     |  rm(self, what: str, what_id: str) -> bool
+     |      delete given task or target from OpenVAS
+     |  
+     |  run_task(self, task: str) -> Union[str, NoneType]
+     |      telling omp to start a task
+     |  
+     |  targets(self) -> Iterator[str]
+     |      extract ip, target-IDs
+     |  
+     |  tasks(self) -> Iterator[str]
+     |      extract ip, mac, task-IDs
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+FUNCTIONS
+    get_quote(s: str) -> str
+        get substring between (first) quotes
+    
+    is_ok(raw_data: str) -> bool
+        check status code of omp command
+    
+    rm_tags(s: str) -> str
+        return string with all XML tags (<TAG>) removed
+    
+    sleep(...)
+        sleep(seconds)
+        
+        Delay execution for a given number of seconds.  The argument may be
+        a floating point number for subsecond precision.
+
+DATA
+    Iterator = typing.Iterator
+    Union = typing.Union
+
+FILE
+    .../autoopenvas/modules/OpenVAS.py
+
+
+
+=================================================
+
+problem in modules/syslog.py - ImportError: cannot import name 'syslog' from 'syslog' (modules/syslog.py)
+
+=================================================
+
+Help on module nettools:
+
+NAME
+    nettools - network functions
+
+FUNCTIONS
+    crawl_net(subnet: str = None) -> Iterator[str]
+        scan given subnet for IPs and MACs using nmap
+    
+    get_mac(ip: str) -> Union[str, NoneType]
+        get current mac address from ip using arping
+
+DATA
+    Iterator = typing.Iterator
+    Union = typing.Union
+    ip_pattern = r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
+    mac_pattern = '([0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-...
+
+FILE
+    .../autoopenvas/modules/nettools.py
+
+
+
+=================================================
+
+Help on module JSONfile:
+
+NAME
+    JSONfile - general module for handling json files, dicts and lists
+
+CLASSES
+    builtins.object
+        JSONfile
+    
+    class JSONfile(builtins.object)
+     |  JSONfile(filename: str) -> None
+     |  
+     |  convert JSON-formatted files to dict or list of dicts and back
+     |  usage:
+     |  
+     |  myfile = JSONfile('filename')
+     |  
+     |  content = myfile.load([[list_sort_key='a'], reverse=True])
+     |  if not myfile.error: print("yay")
+     |  
+     |  myfile.save(content[[, list_sort_key='a'], reverse=True])
+     |  if not myfile.error: print("yay")
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, filename: str) -> None
+     |      set filename and defaults
+     |  
+     |  read(self, **kwargs) -> Union[list, dict, NoneType]
+     |      load file content as dict or list of dicts (optionally sorted)
+     |      kwargs:
+     |          list_sort_key: str [default: None]
+     |          reverse: bool [default: False]
+     |  
+     |  write(self, data: Union[list, dict], **kwargs) -> bool
+     |      save dict or list of dicts to json file (optionally sorted)
+     |      data:
+     |          data: dict or list of dicts
+     |      kwargs:
+     |          list_sort_key: str [default: None]
+     |          reverse: bool [default: False]
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+DATA
+    Union = typing.Union
+
+FILE
+    .../autoopenvas/modules/JSONfile.py
+
+
+
+=================================================
+
+Help on module exe:
+
+NAME
+    exe - general module for subprocessing
+
+FUNCTIONS
+    exe(command: Union[list, str], **kwargs) -> Tuple[Union[str, bool], Union[str, Exception]]
+        execute external process, returns (stdout: str|false, stderr: str)
+        
+        kwargs:
+            timeout: default = 300sec
+            label: log-label
+
+DATA
+    PIPE = -1
+    STDOUT = -2
+    Tuple = typing.Tuple
+    Union = typing.Union
+
+FILE
+    .../autoopenvas/modules/exe.py
+
+

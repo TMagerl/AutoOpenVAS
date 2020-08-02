@@ -1,0 +1,6 @@
+{
+  "ip": "192.168.x.x",
+  "mac": "XX:XX:XX:XX:XX:XX",
+  "comment": "maintainer: Hans-Peter",
+  "skip": true
+}

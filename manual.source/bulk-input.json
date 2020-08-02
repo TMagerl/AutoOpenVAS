@@ -1,0 +1,12 @@
+[
+  {
+    "ip": "192.168.x.1",
+    "mac": "XX:XX:XX:XX:XX:XX",
+    "skip": true
+  },
+  {
+    "ip": "192.168.x.2",
+    "mac": "XX:XX:XX:XX:XX:XX",
+    "comment": "maintainer: Hans-Peter"
+  }
+]

@@ -1,0 +1,9 @@
+# For more information see the manual pages of crontab(5) and cron(8)
+#
+#m    h      dom mon dow command
+
+ *    8-16/2 *   *   1-5 /opt/AutoOpenVAS/AutoOpenVAS.py -run
+ *    17-7/1 *   *   1-5 /opt/AutoOpenVAS/AutoOpenVAS.py -run
+ */30 *      *   *   6-7 /opt/AutoOpenVAS/AutoOpenVAS.py -run
+
+ *    */1    *   *   * /opt/AutoOpenVAS/AutoOpenVAS.py -scan 192.168.1.0/24

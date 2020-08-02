@@ -1,0 +1,9 @@
+{
+  "mac": "XX:XX:XX:XX:XX:XX",
+  "ip": "192.168.x.x",
+  "err": 2,
+  "severity": 2.6,
+  "trend": "-",
+  "stamp": "1970-01-01 00:00:00",
+  "link": "https://192.168.x.x:9392/omp?cmd=get_report&report_id=xxxxx"
+}

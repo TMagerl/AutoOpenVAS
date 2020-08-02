@@ -1,0 +1,32 @@
+\newcommand{\doclanguage}{EN}
+\newcommand{\templates}{/srv/latex_templates/documentation}
+\newcommand{\mytitle}{AutoOpenVAS}
+\newcommand{\mysubtitle}{user manual}
+\newcommand{\myversion}{\input{../VERSION}}
+\newcommand{\teaser}{automate OpenVAS or integrate it into your own \\monitoring/scripting solution}
+\newcommand{\copyrighted}{2019}
+\newcommand{\owner}{T.Magerl}
+\newcommand{\email}{dev@muab.org}
+\newcommand{\licence}{GPLv3}
+
+\input{\templates/main.tex}
+ 
+\newcommand{\sw}{AutoOpenVAS\space}
+
+\begin{document}   
+
+\input{\templates/cover.tex}
+\input{\templates/toc.tex}
+%\input{\templates/acronym-list.tex}  
+
+ 
+\input{about.tex}
+\newpage
+\input{setup.tex}
+\input{usage.tex}
+\input{results.tex}
+\input{faq.tex}  
+\input{\templates/legal_part.tex}  
+
+
+\end{document}   
