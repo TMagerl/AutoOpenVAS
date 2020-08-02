@@ -1,0 +1,71 @@
+\section{FAQ}
+
+\subsection*{Is there any log file?}
+\begin{itemize}
+\item \sw logs to your local syslog.
+\item Consider using a switch to increase log level (see\tosec{verbose}).
+\end{itemize}
+
+\subsection*{Do I have to configure my machines individually?}
+\begin{itemize}
+\item No, see \tosec{active}.
+\end{itemize}
+
+\subsection*{Can I configure my machines individually though?}
+\begin{itemize}
+\item Yes, see \tosec{passive}.
+\end{itemize}
+
+\subsection*{Why is the time wrong?}
+\begin{itemize}
+\item Times are stored as UTC, so notice your time zone.
+\end{itemize}
+
+\subsection*{Job files (import) cannot be read}
+\begin{itemize}
+\item Files have to be strictly in JSON, see \tosec{jobfileimport}
+\item Please check privileges.
+\end{itemize}
+
+\subsection*{Data file (export) cannot be read}
+\begin{itemize}
+\item Please check privileges.
+\item Can be removed if corrupted (though the auto run cycle will be reset).
+\end{itemize}
+
+\subsection*{Link opens task instead of report?}
+\begin{itemize}
+\item If there is no report (yet), yes, see\tosec{link}.
+\end{itemize}
+
+\subsection*{How can I see if at least one test was performed?}
+\begin{itemize}
+\item If \emph{severity} not equal to '-1', yes.
+\end{itemize}
+
+\subsection*{How can I see if OpenVAS tried to test, but failed?}
+\begin{itemize}
+\item If \emph{last\_attempt} > \emph{last\_report}.
+\end{itemize}
+
+\subsection*{Resolving IP addresses leads to strange results?}
+\begin{itemize}
+\item Indeed, it is not supported. Please see \tosec{plainipsonly}
+\end{itemize}
+
+\subsection*{Failed to acquire socket?}
+\begin{itemize}
+\item check if OpenVAS is running
+\item check if OMP port is set correctly
+\item check if firewall/fail2ban blocks OMP port
+\end{itemize}
+
+\subsection*{clean\_up\_threshold\_days does not always work?}
+\begin{itemize}
+\item You might have defined a job in your \emph{import machine list}, \tosec{jobimport}.
+\end{itemize}
+
+\subsection*{Can I exclude particular machines from scan?}
+\begin{itemize}
+\item You can add a job for this machine and set \emph{skip}, see\tosec{jobimport}.
+\end{itemize}

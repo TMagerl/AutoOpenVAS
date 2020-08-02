@@ -1,0 +1,44 @@
+\section{Usage}
+
+\breakpoint\subsection{Run \sw}
+
+You can start \sw from terminal after configuration, though the main purpose is to be run by cronjobs.
+
+For a simple cron job see \tocode{cron.txt}. This example results in scanning for (new) machines and testing next machine every hour.
+
+\codein{cron.txt}{python}{simple cron job sample}
+
+For a more advanced cron job see \tocode{cron_advanced.txt}. Results in scanning for (new) machines every hour, testing every two hours during work time, hourly over night and every 30 minutes on weekends.
+
+\codein{cron_advanced.txt}{python}{advanced cron job sample}
+
+\warn Read and write privileges are needed for import and export paths.
+
+\hint All actions will be submitted to your local syslog server. See \tosec{verbose} for more details.
+ 
+
+\clearpage
+\breakpoint\subsection{Parameters}\label{sec:parameters}
+
+\breakpoint\subsubsection*{-v}\label{sec:verbose}
+Use \emph{-v} if you want more details in your syslog.
+
+\emph{-vv} for insane debug spam.
+
+\breakpoint\subsubsection*{-run}
+Use \emph{-run} to start the next vulnerability check. The candidates will be rotating, so each time you start \sw with this argument, the next machine in the row will be tested.
+
+After a test is started \sw waits 2 minutes and checks again if task is running. If the task was aborted for any reason it will continue with the next machine.
+
+\breakpoint\subsubsection*{-scan [subnet]} scan the given subnet for machines.
+
+Populate OpenVAS automatically with all machines of your network. See\tosec{active}.
+
+Notation is the network address of the subnet you want to scan including CIDR (e.g. \emph{-scan 192.168.1.0/24}).
+
+\warn \emph{nmap} has to be installed for this to work.
+
+\breakpoint\subsubsection*{-verify}\label{sec:verifymac} verify MAC address before scan with \emph{-verify}.
+In case a MAC/IP address pair doesn't match the configured (see\tosec{inventory}) one (any more), the job will be skipped as \emph{failed}.
+
+\warn \emph{arping} has to be installed for this to work.

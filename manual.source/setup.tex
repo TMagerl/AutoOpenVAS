@@ -1,0 +1,131 @@
+\section{Setup}
+
+\breakpoint\subsection{Requirements}\label{sec:requirements}
+\begin{itemize}
+\item Python 3.x
+\item OpenVAS 9.x
+\item arping (optional, see\tosec{verifymac})
+\item nmap (optional, see\tosec{scansubnet})
+\end{itemize}
+
+\breakpoint\subsection{Integration}\label{sec:integration}
+
+There are two possible usecases which can be combined.
+
+\subsubsection{Passive}\label{sec:passive}
+Use this mode if you are using any monitoring solution or scripts.
+
+\sw is fed with a list of machines provided by your monitoring solution and returns correlating data which then can be visualized or otherwise processed (see\toimg{integration_passive}). Please see \tosec{jobimport} for details how to import jobs.
+
+\imgin{integration_passive.jpg}{integration_passive}{passive integration} 
+
+\subsubsection{Active}\label{sec:active}
+Use this mode (see\toimg{integration_active}) if you just want the jobs to be managed by \sw or you have a highly dynamic network enviroment.
+
+\sw scans a given subnet to populate OpenVAS automatically. See \tosec{scansubnet} for further information.
+
+\hint A datafile is created also in active mode, so you can still use your monitoring without having to export your machine list.
+
+\imgin{integration_active.jpg}{integration_active}{active integration} 
+
+\clearpage
+\breakpoint\subsection{Installation} 
+Simply copy the \sw folder to any directory, \textit{`/opt/`} is recommended.
+
+\emph{arping} needs to be installed if you want to verify your machine before a test, see\tosec{verifymac}.
+
+\emph{namep} needs to be installed if you want to let \sw scan your network for machines, see \tosec{active}.
+
+\breakpoint\subsection{Configuration}\label{sec:configuration}
+Rename the sample config file (see \tocode{auto-openvas.conf}) in your \sw directory and edit it to your needs.
+
+\hint Don't forget to grant read privileges.
+
+\codein{auto-openvas.conf}{json}{Sample - auto-openvas.conf}
+
+\begin{itemize}
+\item \textbf{admin}\\
+Your admin login for OpenVAS web interface.
+ 
+\item \textbf{passwd}\\
+Your admin password.
+
+\item \textbf{openvas\_ip}\\
+IP of OpenVAS instance you want to use.
+
+\item \textbf{openvas\_web\_port}\\
+OpenVAS web port (default: 9392)
+
+\item \textbf{openvas\_omp\_port}\\
+OpenVAS omp port (default: 9390)
+
+\item \textbf{default\_scan\_config\_id}\\
+id of scan config for new tasks found at
+
+\emph{Configuration} -> \emph{Port Lists} -> your choice (see\toimg{scan_config})
+
+\item \textbf{default\_portlist\_id}\\
+id of port list for new tasks found at 
+
+\emph{Configuration} -> \emph{Port Lists} -> your choice (see\toimg{scan_config})
+
+\item \textbf{result\_file}\\
+results are stored to this JSON file
+
+\item \textbf{job\_source}\\
+location of job file, can also be a folder, see\tosec{active}
+
+\item \textbf{clean\_up\_threshold\_days}\\
+remove anything where no report was created for last x days from data file
+
+%\item \textbf{min\_recheck\_time}\\
+%prevent (re)checking machines within given time
+
+\imgin{scan_config.jpg}{scan_config}{OpenVAS web interface}
+
+\end{itemize}
+ 
+
+\newpage\breakpoint\subsection{Populate inventory}\label{sec:inventory}
+\breakpoint\subsubsection*{scan subnet for machines}\label{sec:scansubnet}
+If you do not have the option to export an inventory list or you also want to catch \emph{dynamically created machines} (e.g. test-servers) you can use the scan parameter, see\tosec{parameters}.
+Any (new) machine found will get a target and task in OpenVAS.
+
+\hint This method can be used in addition to importing a machine list.
+
+\breakpoint\subsubsection*{import machine list}\label{sec:jobimport}
+\textit{job\_source} (see\tosec{configuration}) defines the source of the machine inventory you provide. 
+
+\textit{job\_source} can also be a folder - a single JSON file per machine is expected then. Might be useful if you have multiple sections in your network with different admins responsible.
+
+Mandatory information is IP and MAC address of the machine.
+
+\hint You can use the verify switch if there's the chance of changing IP addresses. See\tosec{verifymac} for further details.
+
+\emph{comment} is optional and does not affect the process in any way, though it might help for better overview while inspecting the OpenVAS web interface.
+
+\emph{skip} is optional too and is considered as \emph{false} by default. Helpful if you use the scan option and want to prevent particular machines from being added to OpenVAS. Set to \emph{true} in this case.
+
+\label{sec:plainipsonly}\warn never add URIs, plain IPs only. OpenVAS stores results under the resolved IP which might lead to unexpected results.
+
+
+\breakpoint\subsubsection*{Import folder}\label{sec:jobfileimport}
+This is the preferred way, if you have multiple admins who manage their machines on their own. In case you manage your machines centralized it is suggested to jump to \tosec{singlefileimport}.
+
+Every single machine is configured by an own file, see\tocode{input.json}.
+
+\codein{input.json}{json}{sample - input.json}
+
+\breakpoint\subsubsection*{Import file}\label{sec:singlefileimport}
+You can create or generate a single file with all machines.
+
+The example \tocode{bulk-input.json} presets two machines:
+\begin{itemize}
+\item Machine 1 will never be added to OpenVAS, even if found by \emph{scan}.
+\item Machine 2 will be added, even if (currently) not found. It gets the comment on the OpenVAS web interface.
+\end{itemize}
+
+
+\codein{bulk-input.json}{json}{sample - bulk-input.json}
+
+\warn A list of machines needs to be in brackets.
