@@ -10,6 +10,7 @@ from time import sleep
 from typing import Tuple, Iterator
 
 import modules.syslog as log
+from modules.vcheck import vcheck
 from modules.JSONfile import JSONfile
 from modules.Machine import Machine
 from modules.OpenVAS import OpenVAS
@@ -385,8 +386,9 @@ if __name__ == '__main__':
         log.log_level = 7
     elif args.v:
         log.log_level = 6
-    
+
     log.debug('initiated...')
+    vcheck('https://raw.githubusercontent.com/TMagerl/AutoOpenVAS/master/VERSION')
     
     config = load_config()
     ov = OpenVAS('admin', config['passwd'], config['openvas_ip'],
