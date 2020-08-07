@@ -42,6 +42,9 @@ FUNCTIONS
     openvas_run_task() -> None
         try to start OV task until success, ordered by last_report
     
+    print_console() -> None
+        print stats to console
+    
     registered(ip: str, keep: bool = None) -> bool
         create machine object and return True if doesn't exist yet
     
