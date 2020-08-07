@@ -1,6 +1,8 @@
 \breakpoint\section{Results}
 
-\hint If you do not use any monitoring solution or scripts you can skip this part. Simply visit the OpenVAS web interface to get results (see\toimg{integration_active}).
+\breakpoint\subsection{JSON file}
+
+\hint If you do not use any monitoring solution or scripts you can skip this part. Simply visit the OpenVAS web interface to get results (see\toimg{integration_active}) or use console output\tosec{print_console}.
 
 All gathered values are stored to the configured \emph{export path} using JSON format. The file name corresponds to the MAC address.
 
@@ -19,3 +21,8 @@ This is the timestamp of the last successful test.
 
 \breakpoint\subsubsection*{link}\label{sec:link}
 This is a direct link to the latest report of the machine. If there is no report (yet) it points to the task or target if available.
+
+\breakpoint\subsection{Console}\label{sec:print_console}
+You can print the results to console by using the \emph{-print} switch.
+
+\codein{print_console.txt}{json}{print console output}  

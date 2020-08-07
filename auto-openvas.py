@@ -10,11 +10,11 @@ from time import sleep
 from typing import Tuple, Iterator
 
 import modules.syslog as log
-from modules.vcheck import vcheck
 from modules.JSONfile import JSONfile
 from modules.Machine import Machine
 from modules.OpenVAS import OpenVAS
 from modules.nettools import crawl_net, get_mac
+from modules.vcheck import vcheck
 
 log.init('AutoVAS')
 log.log_level = 5
@@ -116,6 +116,7 @@ def get_args() -> argparse.Namespace:
     
     p.add_argument('-scan', type=str, default=None, help="search (sub)net for IPs (e.g. 192.168.0.0/24)")
     p.add_argument('-run', action='store_true', help='start one task')
+    p.add_argument('-print', action='store_true', help='print results to console')
     p.add_argument('-verify', action='store_true', help='skip on unexpected mac')
     p.set_defaults(verify=False)
     p.add_argument('-v', action='store_true', help='verbose')
@@ -370,14 +371,52 @@ def openvas_run_task() -> None:
             else:
                 log.warn('[{0}]: task was aborted'.format(machine[ip].data['mac']))
                 continue
-        
+
         else:
             log.warn('[{0}]: FAILED starting OpenVAS task'.format(machine[ip].data['mac']))
-            
-            continue
     
+            continue
+
     else:
         log.err('FAILED to start any OpenVAS task.')
+
+
+def print_console() -> None:
+    """ print stats to console """
+    
+    print('MAC\t\t\t IP\t\t Verified\t Severity\t Last report\t\t\t Comment')
+    for ip in machine:
+        
+        if not args.verify:
+            verification = '#\t'
+        
+        else:
+            real_mac = get_mac(ip)
+            if machine[ip].data['mac'] == real_mac:
+                verification = '+\t'
+            
+            else:
+                verification = '-\t'
+        
+        if machine[ip].running:
+            last_report = 'running\t'
+        elif machine[ip].data['last_report'] == datetime.strptime('1970-01-01 00:00:00', '%Y-%m-%d %H:%M:%S'):
+            last_report = '#\t\t'
+        else:
+            last_report = machine[ip].data['last_report']
+        
+        comment = '#' if machine[ip].data['comment'] == '' else machine[ip].data['comment']
+        severity = '#' if machine[ip].data['severity'] == -1 else machine[ip].data['severity']
+        
+        print(machine[ip].data['mac'], '\t',
+              ip, '\t',
+              verification, '\t',
+              severity, '\t\t',
+              last_report, '\t\t',
+              comment
+              )
+    
+    print('{0} running tasks'.format(tasks_running()))
 
 
 if __name__ == '__main__':
@@ -386,7 +425,10 @@ if __name__ == '__main__':
         log.log_level = 7
     elif args.v:
         log.log_level = 6
-
+    
+    if args.print:
+        log.use_tty = False
+    
     log.debug('initiated...')
     vcheck('https://raw.githubusercontent.com/TMagerl/AutoOpenVAS/master/VERSION')
     
@@ -409,6 +451,9 @@ if __name__ == '__main__':
     
     clean_up()
     save_results()
+    
+    if args.print:
+        print_console()
     
     log.notice('{0} running tasks'.format(tasks_running()))
     log.debug('done.')
