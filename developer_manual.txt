@@ -42,6 +42,9 @@ FUNCTIONS
     openvas_run_task() -> None
         try to start OV task until success, ordered by last_report
     
+    print_console() -> None
+        print stats to console
+    
     registered(ip: str, keep: bool = None) -> bool
         create machine object and return True if doesn't exist yet
     
@@ -75,9 +78,69 @@ FILE
 
 
 
-=================================================
 
-Help on module Machine:
+
+#####  Help on module JSONfile:
+
+NAME
+    JSONfile - general module for handling json files, dicts and lists
+
+CLASSES
+    builtins.object
+        JSONfile
+    
+    class JSONfile(builtins.object)
+     |  JSONfile(filename: str) -> None
+     |  
+     |  convert JSON-formatted files to dict or list of dicts and back
+     |  usage:
+     |  
+     |  myfile = JSONfile('filename')
+     |  
+     |  content = myfile.load([[list_sort_key='a'], reverse=True])
+     |  if not myfile.error: print("yay")
+     |  
+     |  myfile.save(content[[, list_sort_key='a'], reverse=True])
+     |  if not myfile.error: print("yay")
+     |  
+     |  Methods defined here:
+     |  
+     |  __init__(self, filename: str) -> None
+     |      set filename and defaults
+     |  
+     |  read(self, **kwargs) -> Union[list, dict, NoneType]
+     |      load file content as dict or list of dicts (optionally sorted)
+     |      kwargs:
+     |          list_sort_key: str [default: None]
+     |          reverse: bool [default: False]
+     |  
+     |  write(self, data: Union[list, dict], **kwargs) -> bool
+     |      save dict or list of dicts to json file (optionally sorted)
+     |      data:
+     |          data: dict or list of dicts
+     |      kwargs:
+     |          list_sort_key: str [default: None]
+     |          reverse: bool [default: False]
+     |  
+     |  ----------------------------------------------------------------------
+     |  Data descriptors defined here:
+     |  
+     |  __dict__
+     |      dictionary for instance variables (if defined)
+     |  
+     |  __weakref__
+     |      list of weak references to the object (if defined)
+
+DATA
+    Union = typing.Union
+
+FILE
+    /home/tobias/develop/autoopenvas/modules/JSONfile.py
+
+
+
+
+#####  Help on module Machine:
 
 NAME
     Machine - class Machine
@@ -112,13 +175,12 @@ DATA
     default_stamp = datetime.datetime(1970, 1, 1, 0, 0)
 
 FILE
-    .../autoopenvas/modules/Machine.py
+    /home/tobias/develop/autoopenvas/modules/Machine.py
 
 
 
-=================================================
 
-Help on module OpenVAS:
+#####  Help on module OpenVAS:
 
 NAME
     OpenVAS - class OpenVAS
@@ -191,103 +253,12 @@ DATA
     Union = typing.Union
 
 FILE
-    .../autoopenvas/modules/OpenVAS.py
+    /home/tobias/develop/autoopenvas/modules/OpenVAS.py
 
 
 
-=================================================
 
-problem in modules/syslog.py - ImportError: cannot import name 'syslog' from 'syslog' (modules/syslog.py)
-
-=================================================
-
-Help on module nettools:
-
-NAME
-    nettools - network functions
-
-FUNCTIONS
-    crawl_net(subnet: str = None) -> Iterator[str]
-        scan given subnet for IPs and MACs using nmap
-    
-    get_mac(ip: str) -> Union[str, NoneType]
-        get current mac address from ip using arping
-
-DATA
-    Iterator = typing.Iterator
-    Union = typing.Union
-    ip_pattern = r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
-    mac_pattern = '([0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-...
-
-FILE
-    .../autoopenvas/modules/nettools.py
-
-
-
-=================================================
-
-Help on module JSONfile:
-
-NAME
-    JSONfile - general module for handling json files, dicts and lists
-
-CLASSES
-    builtins.object
-        JSONfile
-    
-    class JSONfile(builtins.object)
-     |  JSONfile(filename: str) -> None
-     |  
-     |  convert JSON-formatted files to dict or list of dicts and back
-     |  usage:
-     |  
-     |  myfile = JSONfile('filename')
-     |  
-     |  content = myfile.load([[list_sort_key='a'], reverse=True])
-     |  if not myfile.error: print("yay")
-     |  
-     |  myfile.save(content[[, list_sort_key='a'], reverse=True])
-     |  if not myfile.error: print("yay")
-     |  
-     |  Methods defined here:
-     |  
-     |  __init__(self, filename: str) -> None
-     |      set filename and defaults
-     |  
-     |  read(self, **kwargs) -> Union[list, dict, NoneType]
-     |      load file content as dict or list of dicts (optionally sorted)
-     |      kwargs:
-     |          list_sort_key: str [default: None]
-     |          reverse: bool [default: False]
-     |  
-     |  write(self, data: Union[list, dict], **kwargs) -> bool
-     |      save dict or list of dicts to json file (optionally sorted)
-     |      data:
-     |          data: dict or list of dicts
-     |      kwargs:
-     |          list_sort_key: str [default: None]
-     |          reverse: bool [default: False]
-     |  
-     |  ----------------------------------------------------------------------
-     |  Data descriptors defined here:
-     |  
-     |  __dict__
-     |      dictionary for instance variables (if defined)
-     |  
-     |  __weakref__
-     |      list of weak references to the object (if defined)
-
-DATA
-    Union = typing.Union
-
-FILE
-    .../autoopenvas/modules/JSONfile.py
-
-
-
-=================================================
-
-Help on module exe:
+#####  Help on module exe:
 
 NAME
     exe - general module for subprocessing
@@ -307,6 +278,55 @@ DATA
     Union = typing.Union
 
 FILE
-    .../autoopenvas/modules/exe.py
+    /home/tobias/develop/autoopenvas/modules/exe.py
 
+
+
+
+#####  Help on module nettools:
+
+NAME
+    nettools - network functions
+
+FUNCTIONS
+    crawl_net(subnet: str = None) -> Iterator[str]
+        scan given subnet for IPs and MACs using nmap
+    
+    get_mac(ip: str) -> Union[str, NoneType]
+        get current mac address from ip using arping
+
+DATA
+    Iterator = typing.Iterator
+    Union = typing.Union
+    ip_pattern = r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})'
+    mac_pattern = '([0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-F]{2}:[0-9A-...
+
+FILE
+    /home/tobias/develop/autoopenvas/modules/nettools.py
+
+
+
+
+#####  problem in modules/syslog.py - ImportError: cannot import name 'syslog' from 'syslog' (modules/syslog.py)
+
+
+
+
+#####  Help on module vcheck:
+
+NAME
+    vcheck - general version check module
+
+FUNCTIONS
+    vcheck(recent_version_url: str) -> Union[str, bool, NoneType]
+        compare given remote and local VERSION file
+        
+        return False if failed, None if no newer version found
+        or recent version
+
+DATA
+    Union = typing.Union
+
+FILE
+    /home/tobias/develop/autoopenvas/modules/vcheck.py
 

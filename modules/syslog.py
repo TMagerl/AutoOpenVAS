@@ -14,6 +14,7 @@ from typing import Tuple
 from syslog import syslog, openlog
 
 log_level = 5
+use_tty = True
 
 
 def init(identifier: str) -> None:
@@ -75,6 +76,6 @@ def _sendlog(message: str, level: int) -> None:
         return
     
     syslog(level, message)
-    
-    if sys.stdout.isatty():
+
+    if use_tty and sys.stdout.isatty():
         print("[{0}] {1}: {2}".format(level, _dt.utcnow().replace(microsecond=0), message))
