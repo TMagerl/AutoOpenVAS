@@ -40,6 +40,3 @@ def vcheck(recent_version_url: str) -> Union[str, bool, None]:
     else:
         log.debug('up to date: v{0}.'.format(current_version))
         return None
-
-# v = vcheck('https://raw.githubusercontent.com/TMagerl/AutoOpenVAS/master/VERSION')
-# print('newer version: ', v)
